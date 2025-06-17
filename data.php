@@ -89,7 +89,7 @@ try {
         $data_ini = filter_var($body['data_ini'] ?? '', FILTER_SANITIZE_STRING);
         $data_fi = filter_var($body['data_fi'] ?? '', FILTER_SANITIZE_STRING);
         $json_horas = $body['json_horas'] ?? '[]';
-        $id_list = filter_var($body['id_list'] ?? '', FILTER_SANITIZE_INTEGER);
+        $id_list = filter_var($body['id_list'] ?? '', FILTER_SANITIZE_STRING);
 
         // Decodificar JSON de horas
         $horas = json_decode($json_horas, true);

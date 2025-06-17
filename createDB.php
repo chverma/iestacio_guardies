@@ -24,6 +24,7 @@ try {
             hora TEXT NOT NULL,
             id_calendar_event INTEGER,
             status INTEGER DEFAULT 0,
+            id_list INTEGER DEFAULT 0,
             created_at TEXT DEFAULT CURRENT_TIMESTAMP
         );
 
