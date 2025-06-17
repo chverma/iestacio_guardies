@@ -79,7 +79,7 @@ function displayData(data) {
 // Cargar y mostrar datos al cargar la página
 document.addEventListener('DOMContentLoaded', async () => {
     const data = await loadDataFromSQLite();
-    displayData(data);
+    displayData(data.data);
 
     /*
     // Configurar botón de actualización
