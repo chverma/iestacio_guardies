@@ -16,7 +16,7 @@ try {
         // Método PUT para actualizar solo id_calendar_event
         $input = file_get_contents('php://input');
         $data = json_decode($input, true)['body'];
-        # echo json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        echo json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
         // Validación básica
         if (!$data || !isset($data['id_list']) || !isset($data['dia']) || !isset($data['hora']) || !isset($data['classe']) || !isset($data['id_calendar_event'])) {
             http_response_code(400);
@@ -191,6 +191,23 @@ try {
         $db = new PDO("sqlite:$db_file");
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+        if (isset($_GET['jsonHoras']) && isset($_GET['id_list'])) {
+            $query = "SELECT dia, hora, classe FROM eventos WHERE id_list= :id_list";
+            $stmt = $db->prepare($query);
+            $stmt->execute([':id_list' => $_GET['id_list']]);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            $data = [];
+            foreach ($result as $row) {
+                $data[] = [
+                    'dia' => $row['dia'],
+                    'hora' => $row['hora'],
+                    'classe' => $row['classe']
+                ];
+            }
+            echo json_encode($data ?? []);
+            exit;
+        } else {
         // Construir consulta con filtros opcionales
         $query = "SELECT * FROM eventos WHERE 1=1";
         $params = [];
@@ -220,6 +237,7 @@ try {
             "count" => count($resultados),
             "data" => $resultados
         ]);
+    }
         
     } else if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
         // Método DELETE para eliminar un evento
