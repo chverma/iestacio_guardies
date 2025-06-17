@@ -15,19 +15,19 @@ try {
     if ($_SERVER['REQUEST_METHOD'] === 'PUT') { 
         // Método PUT para actualizar solo id_calendar_event
         $input = file_get_contents('php://input');
-        $data = json_decode($input, true);
-
+        $data = json_decode($input, true)['body'];
+        # echo json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
         // Validación básica
-        if (!$data || !isset($data['dia']) || !isset($data['hora']) || !isset($data['grup']) || !isset($data['id_calendar_event'])) {
+        if (!$data || !isset($data['id_list']) || !isset($data['dia']) || !isset($data['hora']) || !isset($data['classe']) || !isset($data['id_calendar_event'])) {
             http_response_code(400);
-            echo json_encode(["status" => "error", "message" => "Datos no válidos (se requiere id e id_calendar_event)"]);
+            echo json_encode(["status" => "error", "message" => "Datos no válidos (se requiere id_list, dia, hora, classe, id_calendar_event)"]);
             exit;
         }
-        $id_list = filter_var($data['id_list'], FILTER_SANITIZE_INT);
+        $id_list = filter_var($data['id_list'], FILTER_SANITIZE_STRING);
         $dia = filter_var($data['dia'], FILTER_SANITIZE_STRING);
         $classe = filter_var($data['classe'], FILTER_SANITIZE_STRING);
         $hora = filter_var($data['hora'], FILTER_SANITIZE_STRING);
-        $id_calendar_event = filter_var($data['id_calendar_event'], FILTER_VALIDATE_INT);
+        $id_calendar_event = filter_var($data['id_calendar_event'], FILTER_SANITIZE_STRING);
 
         if ($id_list === false || $id_calendar_event === false || $dia === false || $classe === false || $hora === false) {
             http_response_code(400);
@@ -64,7 +64,7 @@ try {
         echo json_encode([
             "status" => "success",
             "message" => "id_calendar_event actualizado",
-            "updated_id" => $id,
+            "updated_id" => $resultado['id'],
             "changes" => $stmt->rowCount()
         ]);
         exit;
