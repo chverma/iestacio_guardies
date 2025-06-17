@@ -192,7 +192,7 @@ try {
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         if (isset($_GET['jsonHoras']) && isset($_GET['id_list'])) {
-            $query = "SELECT dia, hora, classe FROM eventos WHERE id_list= :id_list";
+            $query = "SELECT dia, hora, classe, id_calendar_event FROM eventos WHERE id_list= :id_list";
             $stmt = $db->prepare($query);
             $stmt->execute([':id_list' => $_GET['id_list']]);
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -202,7 +202,8 @@ try {
                 $data[] = [
                     'dia' => $row['dia'],
                     'hora' => $row['hora'],
-                    'classe' => $row['classe']
+                    'classe' => $row['classe'],
+                    'id_calendar_event' => $row['id_calendar_event']
                 ];
             }
             echo json_encode($data ?? []);
