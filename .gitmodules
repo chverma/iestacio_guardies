@@ -1,0 +1,3 @@
+[submodule "iestacio_intranet_backend"]
+	path = iestacio_intranet_backend
+	url = git@github.com:chverma/iestacio_intranet_backend.git
